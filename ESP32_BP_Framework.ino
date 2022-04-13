@@ -24,6 +24,6 @@ void loop() {
   Serial.printf("pidreturn=%d\r\n", pidreturn);
 
   bp calculatedbp = myBP.getPressure(&korotkoff[0], &cuff[0], 5);
-  Serial.printf("Systolic=%f, Diastolic=%f\r\n", calculatedbp.systolic, calculatedbp.diastolic);
-//  pause(1);
+  // Serial.printf("Systolic=%f, Diastolic=%f\r\n", calculatedbp.systolic, calculatedbp.diastolic);
+  delay(2000);
 }
