@@ -12,9 +12,10 @@
   #define INPUT_FILE "/KS_uint16.dat"
   #define OUTPUT_FILE "/out.dat"
   #define TEMP_FILE "/temp.dat"
+  #define ENERGY_OUTPUT_FILE "/output_energy.dat"
 #endif
 
-  #define filter_dt double // Data type definition for filter data
+  #define filter_dt float // Data type definition for filter data
 
 #ifndef MEMORY_RW
   #define filter_io File // Filter IO file type. 
@@ -35,7 +36,7 @@
    public:
     void rfilter(filter_io* input, filter_io* output, int len, unsigned channel_count, filter_dt* const a, int na, filter_dt* const b, int nb, int* const c, int nc) {}
    private:
-    // void dt_to_byte(filter_dt input) {}
+
    };
 
 #endif

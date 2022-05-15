@@ -1,6 +1,8 @@
 #include "MYSD.h"
 #include <Arduino.h>
 
+void(* resetFunc) (void) = 0;
+
 mySD::mySD() {
 
 }
@@ -70,6 +72,7 @@ void mySD::init(){
   delay(20);
   if (!SD.begin(13, SPI)){
     Serial.printf("Failed to mount SD\n");
+    resetFunc();
     while(true);
   }
   

@@ -10,7 +10,6 @@
 	
 	class BLOODPRESSURE {
 		private: 
-			
 
 		public: 
 			BLOODPRESSURE();

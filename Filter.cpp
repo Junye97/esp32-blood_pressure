@@ -6,8 +6,6 @@
 #include <cctype>
 #include <algorithm>
 
-// #define TEST_RW
-
 template<typename T>
 void array_from_list(T*& array, int& size, const std::list<double>& list) {
 	size = list.size();
