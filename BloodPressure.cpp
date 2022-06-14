@@ -2,14 +2,14 @@
 #include "FILTER.h"
 #include <Arduino.h>
 
+
 #define FILTER_NUM_B 6 // Num of filter coeff tabs
 #define FILTER_NUM_A 6 
 #define NUM_CHANNELS 1 // Support 1 channel filtfilt only
 #define channel_count 1 // Variable name following original filtfilt
 #define HAMMING_NUM_B 40 
 #define HAMMING_NUM_A 1
-#define INT16_SCALER (filter_dt) 8000.0
-#define UINT16_SCALER (filter_dt) 16000.0
+#define HAMMING_SCALER (21.14/4.096)
 
 // Constants and global variables
 
@@ -46,6 +46,8 @@ bp BLOODPRESSURE::getPressure(uint16_t *korotkoff, uint16_t *cuff, int len){
 	}
  
 	// perform blood pressure calculation here
+
+#ifdef FILTER_TESTING
 
 #ifndef MEMORY_RW
 
@@ -120,6 +122,8 @@ bp BLOODPRESSURE::getPressure(uint16_t *korotkoff, uint16_t *cuff, int len){
   delete(energy_output);
   
 #endif
+
+#endif
 	
 	calculatedPressure = {120, 80};	// this is a fake value , return -1 for both value if error
 	return calculatedPressure;
@@ -137,6 +141,16 @@ static void calculate_energy(filter_io* input, filter_io* output, int len){
     curr_value = pow(((filter_dt) buff[count])/INT16_SCALER, 2);
     buff[count] = (filter_io) (sqrt(curr_value)*INT16_SCALER);
   }
+
+#if 1
+  for (int ind = 0; ind < HAMMING_NUM_B; ind++) {
+    hamming_b[ind] = hamming_b[ind]/HAMMING_SCALER;
+//    Serial.printf("%f\n", hamming_b[ind]);
+  }
+  for (int ind = 0; ind < HAMMING_NUM_A; ind++)
+    hamming_a[ind] = hamming_a[ind];
+  
+#endif
 
   filter->rfilter(buff, output, (int) len, (unsigned) channel_count, hamming_a, HAMMING_NUM_A, hamming_b, HAMMING_NUM_B, c, NUM_CHANNELS);
   memcpy(buff, output, sizeof(filter_io)*len);

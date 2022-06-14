@@ -1,10 +1,13 @@
 #ifndef PID_H_
 	#define PID_H_
 	#include <stdint.h>
-	
+ 
+//	#ifndef SPI_H_
+//    #include <SPI.h>
+//  #endif
+  
 	class PID {
 		private: 
-			
 
 		public: 
 			PID();

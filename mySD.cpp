@@ -7,72 +7,18 @@ mySD::mySD() {
 
 }
 
-//void mySD::init() { 
-//	// initialisation of mySD class
-//	Serial.print("\nInitializing SD card...");
-//
-//	// we'll use the initialization code from the utility libraries
-//	// since we're just testing if the card is working!
-//	if (!SD.begin(SD_CHIP_SEL)) {
-//  	Serial.println("initialization failed. Things to check:");
-//  	Serial.println("* is a card inserted?");
-//  	Serial.println("* is your wiring correct?");
-//  	Serial.println("* did you change the chipSelect pin to match your shield or module?");
-//    Serial.println("Try again in 1 sec...");
-//    delay(1000);
-//    Serial.printf("Second try: %d\n", SD.begin(SD_CHIP_SEL));
-////	while (1);
-//	} else {
-//	  Serial.println("Wiring is correct and a card is present.");
-//	}
-//
-//	// print the type of card
-//	Serial.println();
-//	Serial.print("Card type:         ");
-//	switch (SD.cardType()) {
-//	case CARD_NONE:
-//		Serial.println("NONE");
-//		break;
-//	case CARD_MMC:
-//		Serial.println("MMC");
-//		break;
-//	case CARD_SD:
-//		Serial.println("SD");
-//		break;
-//	case CARD_SDHC:
-//		Serial.println("SDHC");
-//		break;
-//	default:
-//		Serial.println("Unknown");
-//	}
-//
-//	// print the type and size of the first FAT-type volume
-//	//  uint32_t volumesize;
-//	//  Serial.print("Volume type is:    FAT");
-//	//  Serial.println(SDFS.usefatType(), DEC);
-//
-//	Serial.print("Card size:  ");
-//	Serial.println((float)SD.cardSize()/1000);
-//
-//	Serial.print("Total bytes: ");
-//	Serial.println(SD.totalBytes());
-//
-//	Serial.print("Used bytes: ");
-//	Serial.println(SD.usedBytes());
-//
-//	File dir =  SD.open("/");
-//	mySD::printDirectory(dir, 0);
-//
-//}
-
 void mySD::init(){
 
   //Set pins for Micro SD Card on T8 board
   SPI.begin(14, 2, 15, 13); //SCK, MISO, MOSI,SS
-  delay(20);
-  if (!SD.begin(13, SPI)){
+  delay(100);
+//  int load_trial_max = 10;
+//  int curr_trial = 0;
+  while (!SD.begin(13, SPI)){
     Serial.printf("Failed to mount SD\n");
-    resetFunc();
+//    if (curr_trial >= load_trial_max)
+//      resetFunc();
+//    curr_trial++;
     while(true);
   }
   

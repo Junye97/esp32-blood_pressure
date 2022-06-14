@@ -52,9 +52,9 @@ void Filter::rfilter(filter_io* input, filter_io* output, int len, unsigned chan
 
 			for (int i=0; i<nc; ++i) {
 #ifndef MEMORY_RW
-				input_samples[input_index][i] = *((filter_dt*) (&buffer.byte_buffer));
+				input_samples[input_index][i] = *((filter_dt*) (&buffer.byte_buffer)));
 #else
-        input_samples[input_index][i] = (filter_dt) input[input_count];
+        input_samples[input_index][i] = ((filter_dt) input[input_count])/INT16_SCALER;
 #endif
 				value = 0.0;
 				for (int r=0; r<nb; ++r) {
@@ -67,7 +67,7 @@ void Filter::rfilter(filter_io* input, filter_io* output, int len, unsigned chan
 					if (prev_index < 0) prev_index += na;
 					value -= a[r] * output_samples[prev_index][i];
 				}
-				output_samples[output_index][i] = value / a[0];
+				output_samples[output_index][i] = (value / a[0]);
 			}
 
 			// Hardcode the output to single channel
@@ -76,14 +76,15 @@ void Filter::rfilter(filter_io* input, filter_io* output, int len, unsigned chan
 #ifndef MEMORY_RW
 			if (output->write((uint8_t*)(output_samples[output_index]), output_write_size) != output_write_size) {Serial.printf("could not write to output file\n"); exit;}
 #else
-      output[sample_count] = (filter_io) output_samples[output_index][0];
+      output[sample_count] = (filter_io) (output_samples[output_index][0]*INT16_SCALER);
       input_count++;
 #endif
       
-			if (sample_count % 500 == 0){
+			if (sample_count % 10000 == 0){
 				Serial.printf("%d samples remaining, current input = %f, output = %f, value = %f\n", sample_count, input_samples[input_index][0], output_samples[output_index][0], value);
 			}
 			++input_index %= nb;
 			++output_index %= na;
 		}
+
 	}

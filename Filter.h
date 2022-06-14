@@ -3,7 +3,6 @@
 	#include <stdint.h>
   #include <list> 
 
-  #define FILTER_TESTING
   #define MEMORY_RW 
   
 #ifdef FILTER_TESTING
@@ -21,6 +20,8 @@
   #define filter_io File // Filter IO file type. 
 #else
   #define filter_io int16_t
+  #define INT16_SCALER (filter_dt) 8000.0
+  #define UINT16_SCALER (filter_dt) 16000.0
 #endif
 
   template<typename T>
