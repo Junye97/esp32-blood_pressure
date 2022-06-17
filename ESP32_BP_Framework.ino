@@ -1,11 +1,18 @@
 #include "PID.h"
 #include "BLOODPRESSURE.h"
-#include "FILTER.h"
+//#include "FILTER.h"
 #include "MYDAC.h"
 #include "MYADC.h"
 
-#define PID_TESTING
-//#define FILTER_TESTING
+//#define PID_TESTING
+
+#ifdef BP_TESTING
+  #ifndef FILTER_TESTING
+    #define FILTER_TESTING
+  #endif
+  #define NUM_BP_TEST_FILES 50
+  int input_file_counter = 0;
+#endif
 
 #ifdef SD_TESTING
 #include "MYSD.h"
@@ -46,7 +53,7 @@ void setup() {
   dac_input = 0xffff;
 //  Serial.printf("CS %d CLK %d MISO %d MOSI %d\n", SS, SLK, MISO, MOSI);
 #endif
- 
+
 }
 
 // the loop function runs over and over again forever
@@ -58,8 +65,16 @@ void loop() {
 
 #ifdef FILTER_TESTING
 #ifdef MEMORY_RW
-  File input = (SD.open(INPUT_FILE, FILE_READ));
-  if (!input) Serial.printf("could not open input file '%s'\n", INPUT_FILE);
+  std::string input_filename;
+
+#ifndef BP_TESTING
+  input_filename = INPUT_FILE;
+#else
+  while (input_file_counter < NUM_BP_TEST_FILES) {
+  input_filename = "/SBP_DBP_test/KS_" + std::to_string(++input_file_counter) + "_seg_1_uint16.dat";
+#endif
+  File input = (SD.open(&input_filename[0], FILE_READ));
+  if (!input) Serial.printf("could not open input file '%s'\n", input_filename);
   len = input.size()/sizeof(filter_io);
   Serial.printf("Allocating memory for korotkoff\n");
   korotkoff = new uint16_t[len];
@@ -70,6 +85,7 @@ void loop() {
 #endif 
   bp calculatedbp = myBP.getPressure(&korotkoff[0], &cuff[0], len);
   Serial.printf("Output written. Going idle.\n");
+  }
   while (true) {} 
 #endif
 

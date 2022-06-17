@@ -6,12 +6,14 @@
 #include <cctype>
 #include <algorithm>
 
+/*
 template<typename T>
 void array_from_list(T*& array, int& size, const std::list<double>& list) {
 	size = list.size();
 	array = new T[size];
 	std::copy(list.begin(), list.end(), array);
 }
+*/
 
 void Filter::rfilter(filter_io* input, filter_io* output, int len, unsigned channel_count, filter_dt* const a, int na, filter_dt* const b, int nb, int* const c, int nc) {
 		// filter_dt buffer[channel_count*sizeof(filter_dt)];
@@ -80,9 +82,9 @@ void Filter::rfilter(filter_io* input, filter_io* output, int len, unsigned chan
       input_count++;
 #endif
       
-			if (sample_count % 10000 == 0){
-				Serial.printf("%d samples remaining, current input = %f, output = %f, value = %f\n", sample_count, input_samples[input_index][0], output_samples[output_index][0], value);
-			}
+//			if (sample_count % 10000 == 0){
+//				Serial.printf("%d samples remaining, current input = %f, output = %f, value = %f\n", sample_count, input_samples[input_index][0], output_samples[output_index][0], value);
+//			}
 			++input_index %= nb;
 			++output_index %= na;
 		}

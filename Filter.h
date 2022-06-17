@@ -1,17 +1,13 @@
 #ifndef FILTER_H_
 	#define FILTER_H_
 	#include <stdint.h>
-  #include <list> 
+//  #include <list> 
 
   #define MEMORY_RW 
   
 #ifdef FILTER_TESTING
   #define SD_TESTING
   #include "MYSD.H"
-  #define INPUT_FILE "/KS_uint16.dat"
-  #define OUTPUT_FILE "/out.dat"
-  #define TEMP_FILE "/temp.dat"
-  #define ENERGY_OUTPUT_FILE "/output_energy.dat"
 #endif
 
   #define filter_dt float // Data type definition for filter data
@@ -24,8 +20,8 @@
   #define UINT16_SCALER (filter_dt) 16000.0
 #endif
 
-  template<typename T>
-	void array_from_list(T*& array, int& size, const std::list<double>& list);
+//  template<typename T>
+//	void array_from_list(T*& array, int& size, const std::list<double>& list);
 
   class Filter {
   public:
